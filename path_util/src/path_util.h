@@ -12,6 +12,7 @@ const char * getDataPath();
 const char * getMapPath();
 const char * getModelsPath();
 const char * getConfigPath();
+const char * getSatellitePath();
 
 
 #ifdef __cplusplus

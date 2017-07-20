@@ -37,3 +37,10 @@ getModelsPath()
 {
     return BASE_PATH "/../../models";
 }
+
+
+const char *
+getSatellitePath()
+{
+    return BASE_PATH "/../../data/satellite";
+}
