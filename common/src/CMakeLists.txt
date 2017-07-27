@@ -1,5 +1,5 @@
 add_definitions(
-    #-ggdb3 
+    #-ggdb3
     -std=gnu99
     -msse2
 )
@@ -21,7 +21,7 @@ add_library(hr-common SHARED ${c_files})
 # Set the library API version. Increment every time the public API changes
 set_target_properties(hr-common PROPERTIES SOVERSION 1)
 
-set(REQUIRED_LIBS bot2-core lcmtypes_hr-lcmtypes geom-utils)
+set(REQUIRED_LIBS bot2-core lcmtypes_hr-lcmtypes lcmtypes-gps18 geom-utils)
 
 pods_use_pkg_config_packages(hr-common ${REQUIRED_LIBS})
 
