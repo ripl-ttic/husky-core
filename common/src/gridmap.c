@@ -48,7 +48,8 @@ void gridmap_nearest_bucket_center(gridmap_t *gm, double x, double y, double *ox
     *oy = gm->y0 + (iy+0.5)*gm->meters_per_pixel;
 }
 
-gridmap_lut_t *gridmap_lut_create_cliff(int table_size, double max_dist, double cliff_distance, double decay, int max_value)
+gridmap_lut_t *gridmap_lut_create_cliff(int table_size, double max_dist, 
+                                        double cliff_distance, double decay, int max_value)
 {
     gridmap_lut_t *lut = (gridmap_lut_t*) calloc(1, sizeof(gridmap_lut_t));
     lut->table = malloc(table_size * sizeof(int));
@@ -81,7 +82,9 @@ gridmap_lut_t *gridmap_lut_create_cliff(int table_size, double max_dist, double 
 }
 
 // like the above, except that distances less than restricted_distance will have the restricted bit set.
-gridmap_lut_t *gridmap_lut_create_cliff_restricted(int table_size, double max_dist, double cliff_distance, double restricted_distance, double decay, int max_value, int outside_value)
+gridmap_lut_t *gridmap_lut_create_cliff_restricted(int table_size, double max_dist, 
+                                                   double cliff_distance, double restricted_distance, 
+                                                   double decay, int max_value, int outside_value)
 {
     gridmap_lut_t *lut = (gridmap_lut_t*) calloc(1, sizeof(gridmap_lut_t));
     lut->table = malloc(table_size * sizeof(int));
@@ -117,7 +120,8 @@ gridmap_lut_t *gridmap_lut_create_cliff_restricted(int table_size, double max_di
 }
 
 // like the above, except that distances less than restricted_distance will have the restricted bit set.
-gridmap_lut_t *gridmap_lut_create_cliff_restricted_linear(int table_size, double max_dist, double cliff_distance, double restricted_distance, int max_value, int outside_value)
+gridmap_lut_t *gridmap_lut_create_cliff_restricted_linear(int table_size, double max_dist, double cliff_distance, 
+                                                          double restricted_distance, int max_value, int outside_value)
 {
     gridmap_lut_t *lut = (gridmap_lut_t*) calloc(1, sizeof(gridmap_lut_t));
     lut->table = malloc(table_size * sizeof(int));
