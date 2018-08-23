@@ -33,19 +33,19 @@ nsew (char a)
     return 1;
 }
 
-gps_nmea_t *
+gps_senlcm_nmea_t *
 nmea_new (void)
 {
-    gps_nmea_t * gn;
+    gps_senlcm_nmea_t * gn;
 
-    gn = malloc (sizeof (gps_nmea_t));
-    memset (gn, 0, sizeof (gps_nmea_t));
+    gn = malloc (sizeof (gps_senlcm_nmea_t));
+    memset (gn, 0, sizeof (gps_senlcm_nmea_t));
 
     return gn;
 }
 
 void
-nmea_free (gps_nmea_t * gn)
+nmea_free (gps_senlcm_nmea_t * gn)
 {
     free (gn);
 }
@@ -65,10 +65,10 @@ nmea_state_clear (gps_state_t * gd)
 
 static void
 nmea_handler (const lcm_recv_buf_t *rbuf, const char *channel,
-              const nmea_t *nmea, void *user)
-//const char * msgtype, const nmea_t * nmea, gps_nmea_t * gn)
+              const senlcm_nmea_t *nmea, void *user)
+//const char * msgtype, const senlcm_nmea_t * nmea, gps_senlcm_nmea_t * gn)
 {
-    gps_nmea_t *gn = (gps_nmea_t*) user;
+    gps_senlcm_nmea_t *gn = (gps_senlcm_nmea_t*) user;
 
     if (nmea_parse (&gn->state_pending, nmea)) {
         memcpy (&gn->state, &gn->state_pending, sizeof (gps_state_t));
@@ -79,24 +79,24 @@ nmea_handler (const lcm_recv_buf_t *rbuf, const char *channel,
 }
 
 int
-nmea_subscribe (gps_nmea_t * gn, lcm_t * lcm, const char * channel,
+nmea_subscribe (gps_senlcm_nmea_t * gn, lcm_t * lcm, const char * channel,
         gps_state_handler_t handler, void * userdata)
 {
     gn->handler = handler;
     gn->userdata = userdata;
-    gn->subscription = nmea_t_subscribe (lcm, channel, nmea_handler, gn);
+    gn->subscription = senlcm_nmea_t_subscribe (lcm, channel, nmea_handler, gn);
     return gn->subscription ? 0 : -1;
 }
 
 int
-nmea_unsubscribe (gps_nmea_t * gn, lcm_t * lcm, const char * channel,
+nmea_unsubscribe (gps_senlcm_nmea_t * gn, lcm_t * lcm, const char * channel,
         gps_state_handler_t handler, void * userdata)
 {
-    return nmea_t_unsubscribe (lcm, gn->subscription);
+    return senlcm_nmea_t_unsubscribe (lcm, gn->subscription);
 }
 
 int
-nmea_parse (gps_state_t *gd, const nmea_t *_nmea)
+nmea_parse (gps_state_t *gd, const senlcm_nmea_t *_nmea)
 {
     nmea_sentence_t n;
     memset( &n, 0, sizeof(n) );

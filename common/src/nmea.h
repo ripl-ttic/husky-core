@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <bot_core/bot_core.h>
 
-#include <lcmtypes/nmea_t.h>
+#include <lcmtypes/senlcm_nmea_t.h>
 
 #define GPS_MAX_SATS 52
 
@@ -13,7 +13,7 @@
 #define GPS_STATUS_LOCK 2
 #define GPS_STATUS_DGPS_LOCK 3
 
-typedef struct _gps_nmea_t gps_nmea_t;
+typedef struct _gps_senlcm_nmea_t gps_senlcm_nmea_t;
 typedef struct _gps_state_t gps_state_t;
 
 struct _gps_state_t
@@ -47,26 +47,26 @@ struct _gps_state_t
     //int    messagecount;
 };
 
-typedef int (*gps_state_handler_t)(gps_nmea_t *, gps_state_t *, void *);
+typedef int (*gps_state_handler_t)(gps_senlcm_nmea_t *, gps_state_t *, void *);
 
-struct _gps_nmea_t
+struct _gps_senlcm_nmea_t
 {
     gps_state_t         state;
     gps_state_t         state_pending;
     gps_state_handler_t handler;
     //lcm_lc_handler_t    *nhid;
-    nmea_t_subscription_t *subscription;
+    senlcm_nmea_t_subscription_t *subscription;
     void *              userdata;
 };
 
-gps_nmea_t * nmea_new (void);
-int nmea_subscribe (gps_nmea_t * gn, lcm_t * lcm, const char * channel,
+gps_senlcm_nmea_t * nmea_new (void);
+int nmea_subscribe (gps_senlcm_nmea_t * gn, lcm_t * lcm, const char * channel,
         gps_state_handler_t handler, void * userdata);
-int nmea_unsubscribe (gps_nmea_t * gn, lcm_t * lcm, const char * channel,
+int nmea_unsubscribe (gps_senlcm_nmea_t * gn, lcm_t * lcm, const char * channel,
         gps_state_handler_t handler, void * userdata);
-void nmea_free (gps_nmea_t * gn);
+void nmea_free (gps_senlcm_nmea_t * gn);
 void nmea_state_clear (gps_state_t * gd);
-int nmea_parse (gps_state_t * gd, const nmea_t *_nmea);
+int nmea_parse (gps_state_t * gd, const senlcm_nmea_t *_nmea);
 
 
 
