@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <bot_core/bot_core.h>
 
-#include <lcmtypes/erlcm_nmea_t.h>
+#include <lcmtypes/nmea_t.h>
 
 #define GPS_MAX_SATS 52
 
@@ -55,7 +55,7 @@ struct _gps_nmea_t
     gps_state_t         state_pending;
     gps_state_handler_t handler;
     //lcm_lc_handler_t    *nhid;
-    erlcm_nmea_t_subscription_t *subscription;
+    nmea_t_subscription_t *subscription;
     void *              userdata;
 };
 
@@ -66,7 +66,7 @@ int nmea_unsubscribe (gps_nmea_t * gn, lcm_t * lcm, const char * channel,
         gps_state_handler_t handler, void * userdata);
 void nmea_free (gps_nmea_t * gn);
 void nmea_state_clear (gps_state_t * gd);
-int nmea_parse (gps_state_t * gd, const erlcm_nmea_t *_nmea);
+int nmea_parse (gps_state_t * gd, const nmea_t *_nmea);
 
 
 

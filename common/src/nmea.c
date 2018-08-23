@@ -65,7 +65,7 @@ nmea_state_clear (gps_state_t * gd)
 
 static void
 nmea_handler (const lcm_recv_buf_t *rbuf, const char *channel,
-              const erlcm_nmea_t *nmea, void *user)
+              const nmea_t *nmea, void *user)
 //const char * msgtype, const nmea_t * nmea, gps_nmea_t * gn)
 {
     gps_nmea_t *gn = (gps_nmea_t*) user;
@@ -84,7 +84,7 @@ nmea_subscribe (gps_nmea_t * gn, lcm_t * lcm, const char * channel,
 {
     gn->handler = handler;
     gn->userdata = userdata;
-    gn->subscription = erlcm_nmea_t_subscribe (lcm, channel, nmea_handler, gn);
+    gn->subscription = nmea_t_subscribe (lcm, channel, nmea_handler, gn);
     return gn->subscription ? 0 : -1;
 }
 
@@ -92,11 +92,11 @@ int
 nmea_unsubscribe (gps_nmea_t * gn, lcm_t * lcm, const char * channel,
         gps_state_handler_t handler, void * userdata)
 {
-    return erlcm_nmea_t_unsubscribe (lcm, gn->subscription);
+    return nmea_t_unsubscribe (lcm, gn->subscription);
 }
 
 int
-nmea_parse (gps_state_t *gd, const erlcm_nmea_t *_nmea)
+nmea_parse (gps_state_t *gd, const nmea_t *_nmea)
 {
     nmea_sentence_t n;
     memset( &n, 0, sizeof(n) );
