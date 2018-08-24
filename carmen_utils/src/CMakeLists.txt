@@ -1,35 +1,42 @@
+add_definitions(
+#    -ggdb3
+    -std=gnu99
+    )
+
 # Create a shared library libhello.so with a single source file
 add_library(carmen-utils SHARED
-  geometry.c  
+  geometry.c
   map_interface.c
   global.c
   carmen_stdio.c
   map_read.c
   map_write.c
-  #laser_interface.c
-  #navigator_interface.c
+  map3d_interface.c
   )
 
+include_directories(
+    ${GLIB2_INCLUDE_DIRS}
+    ${GTK2_INCLUDE_DIRS}
+    )
 target_link_libraries (carmen-utils z)
 
 # make the header public
 # install it to include/hello
-pods_install_headers(carmen.h 
-  #laser_interface.h  
-  #navigator_interface.h  
+pods_install_headers(carmen.h
   map.h
+  map3d.h
   geometry.h
   global.h
   carmen_stdio.h
-  map_interface.h   
+  map_interface.h
   map_messages.h
-  #localize_messages.h
   base_messages.h
   map_io.h
   laser_messages.h
   robot_messages.h
-  navigator_messages.h 
-  map_interface.c
+  navigator_messages.h
+  map_interface.h
+  map3d_interface.h
   DESTINATION carmen_utils)
 
 # make the library public
