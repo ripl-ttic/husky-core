@@ -12,7 +12,7 @@
     or is not compatible with the tile, a new gridmap is created (and
     the old destroyed). The gridmap is returned. 
 **/
-gridmap_t *gridmap_util_import_tile(gridmap_t *gm, const erlcm_gridmap_tile_t *tile, const double pos[3])
+gridmap_t *gridmap_util_import_tile(gridmap_t *gm, const ripl_gridmap_tile_t *tile, const double pos[3])
 {
     if (gm == NULL || gm->meters_per_pixel != tile->meters_per_pixel) {
         double sizex = gm ? gm->sizex : 200;
@@ -41,8 +41,8 @@ void gridmap_util_publish(const gridmap_t *gm, lcm_t *lcm, const char *channel, 
     int total_size = 0;
     int num_tiles = 0;
 
-    erlcm_gridmap_tile_t tile;
-    memset(&tile, 0, sizeof(erlcm_gridmap_tile_t));
+    ripl_gridmap_tile_t tile;
+    memset(&tile, 0, sizeof(ripl_gridmap_tile_t));
     int data_maxlen = 256 * 1024;
     uint8_t *buf = malloc(data_maxlen);
     if (!buf) {
@@ -66,7 +66,7 @@ void gridmap_util_publish(const gridmap_t *gm, lcm_t *lcm, const char *channel, 
             if (gridmap_encode(gm, x, y, tile.width, tile.height, tile.data, data_maxlen, &tile.datalen))
                 printf("gridmap encode error\n");
 
-            erlcm_gridmap_tile_t_publish(lcm, channel, &tile);
+            ripl_gridmap_tile_t_publish(lcm, channel, &tile);
 
             num_tiles ++;
             total_size += tile.datalen;
@@ -81,7 +81,7 @@ void gridmap_util_publish(const gridmap_t *gm, lcm_t *lcm, const char *channel, 
 
 gridmap_u16_t *
 gridmap_util_import_tile_u16 (gridmap_u16_t *gm, 
-        const erlcm_gridmap_tile_t *tile, const double pos[3])
+        const ripl_gridmap_tile_t *tile, const double pos[3])
 {
     if (gm == NULL || gm->meters_per_pixel != tile->meters_per_pixel) {
         double sizex = gm ? gm->sizex : 200;
@@ -110,8 +110,8 @@ gridmap_util_publish_u16 (const gridmap_u16_t *gm, lcm_t *lcm,
     int total_size = 0;
     int num_tiles = 0;
 
-    erlcm_gridmap_tile_t tile;
-    memset(&tile, 0, sizeof(erlcm_gridmap_tile_t));
+    ripl_gridmap_tile_t tile;
+    memset(&tile, 0, sizeof(ripl_gridmap_tile_t));
     int data_maxlen = 65536;
     uint8_t buf[data_maxlen];
     tile.data = buf;
@@ -157,7 +157,7 @@ gridmap_util_publish_u16 (const gridmap_u16_t *gm, lcm_t *lcm,
             }
 #endif
 
-            erlcm_gridmap_tile_t_publish(lcm, channel, &tile);
+            ripl_gridmap_tile_t_publish(lcm, channel, &tile);
 
             num_tiles ++;
             total_size += tile.datalen;

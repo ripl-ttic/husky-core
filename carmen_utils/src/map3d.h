@@ -61,7 +61,7 @@ extern "C" {
         carmen_point_t midpt;
         int sizeX2;
         int sizeY2;
-    } erlcm_map_t, *erlcm_map_p;
+    } ripl_map_t, *ripl_map_p;
 
     typedef struct {
         float*** map;

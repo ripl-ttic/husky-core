@@ -33,19 +33,19 @@ extern "C" {
 
   }
 
-  static inline double carmen3d_dist(erlcm_point_t *p1, erlcm_point_t *p2)
+  static inline double carmen3d_dist(ripl_point_t *p1, ripl_point_t *p2)
   {
     return sqrt(carmen_square(p1->x - p2->x) + carmen_square(p1->y - p2->y) + carmen_square(p1->z - p2->z));
   }
 
-  static inline void carmen3d_point_to_point3d(carmen_point_t* point, erlcm_point_t* point3d)
+  static inline void carmen3d_point_to_point3d(carmen_point_t* point, ripl_point_t* point3d)
   {
     point3d->x = point->x;
     point3d->y = point->y;
     point3d->yaw = point->theta;
   }
 
-  static inline void carmen3d_point3d_to_point(erlcm_point_t* point3d, carmen_point_t* point)
+  static inline void carmen3d_point3d_to_point(ripl_point_t* point3d, carmen_point_t* point)
   {
     point->x = point3d->x;
     point->y = point3d->y;
@@ -102,10 +102,10 @@ extern "C" {
     return sum;
   }
 
-  /* static inline erlcm_quaternion_t carmen3d_axis_angle_to_quaternion(erlcm_axis_angle_t axis_angle) */
+  /* static inline ripl_quaternion_t carmen3d_axis_angle_to_quaternion(ripl_axis_angle_t axis_angle) */
   /* { */
   /*   double theta = sqrt(axis_angle.ax * axis_angle.ax + axis_angle.ay * axis_angle.ay + axis_angle.az * axis_angle.az); */
-  /*   erlcm_quaternion_t quarternion; */
+  /*   ripl_quaternion_t quarternion; */
   /*   quarternion.q0 = cos(theta / 2); */
   /*   quarternion.q1 = axis_angle.ax / theta * sin(theta / 2); */
   /*   quarternion.q2 = axis_angle.ay / theta * sin(theta / 2); */
@@ -114,9 +114,9 @@ extern "C" {
   /*   return quarternion; */
   /* } */
 
-  /* static inline erlcm_euler_t carmen3d_quaternion_to_euler(erlcm_quaternion_t quaternion) */
+  /* static inline ripl_euler_t carmen3d_quaternion_to_euler(ripl_quaternion_t quaternion) */
   /* { */
-  /*   erlcm_euler_t euler; */
+  /*   ripl_euler_t euler; */
   /*   euler.yaw = atan2(2 * (quaternion.q0 * quaternion.q3 + quaternion.q1 * quaternion.q2), 1 - 2 * (quaternion.q2 */
   /*       * quaternion.q2 + quaternion.q3 * quaternion.q3)); */
   /*   euler.pitch = asin(2 * (quaternion.q0 * quaternion.q2 - quaternion.q3 * quaternion.q1)); */
@@ -126,16 +126,16 @@ extern "C" {
   /*   return euler; */
   /* } */
 
-  /* static inline erlcm_euler_t carmen3d_axis_angle_to_euler(erlcm_axis_angle_t axis_angle) */
+  /* static inline ripl_euler_t carmen3d_axis_angle_to_euler(ripl_axis_angle_t axis_angle) */
   /* { */
-  /*   erlcm_euler_t euler; */
+  /*   ripl_euler_t euler; */
   /*   euler = carmen3d_quaternion_to_euler(carmen3d_axis_angle_to_quaternion(axis_angle)); */
   /*   return euler; */
   /* } */
 
-  /* static inline erlcm_axis_angle_t carmen3d_quaternion_to_axis_angle(erlcm_quaternion_t quaternion) */
+  /* static inline ripl_axis_angle_t carmen3d_quaternion_to_axis_angle(ripl_quaternion_t quaternion) */
   /* { */
-  /*   erlcm_axis_angle_t axis_angle; */
+  /*   ripl_axis_angle_t axis_angle; */
 
   /*   double theta = 2 * acos(quaternion.q0); */
   /*   if (theta != 0) { */
@@ -151,9 +151,9 @@ extern "C" {
   /*   return axis_angle; */
   /* } */
 
-  /* static inline erlcm_rot_matrix_t carmen3d_quaternion_to_rot_matrix(erlcm_quaternion_t quaternion) */
+  /* static inline ripl_rot_matrix_t carmen3d_quaternion_to_rot_matrix(ripl_quaternion_t quaternion) */
   /* { */
-  /*   erlcm_rot_matrix_t rot_mat; */
+  /*   ripl_rot_matrix_t rot_mat; */
 
   /*   double * R = rot_mat.R; */
 
@@ -180,12 +180,12 @@ extern "C" {
   /*   return rot_mat; */
   /* } */
 
-  /* static inline erlcm_quaternion_t carmen3d_euler_to_quaternion(erlcm_euler_t euler) */
+  /* static inline ripl_quaternion_t carmen3d_euler_to_quaternion(ripl_euler_t euler) */
   /* { */
   /*   double phi = euler.roll; */
   /*   double theta = euler.pitch; */
   /*   double psi = euler.yaw; */
-  /*   erlcm_quaternion_t quaternion; */
+  /*   ripl_quaternion_t quaternion; */
   /*   quaternion.q0 = cos(phi / 2) * cos(theta / 2) * cos(psi / 2) + sin(phi / 2) * sin(theta / 2) * sin(psi / 2); */
   /*   quaternion.q1 = sin(phi / 2) * cos(theta / 2) * cos(psi / 2) - cos(phi / 2) * sin(theta / 2) * sin(psi / 2); */
   /*   quaternion.q2 = cos(phi / 2) * sin(theta / 2) * cos(psi / 2) + sin(phi / 2) * cos(theta / 2) * sin(psi / 2); */
@@ -193,12 +193,12 @@ extern "C" {
   /*   return quaternion; */
   /* } */
 
-  /* static inline erlcm_rot_matrix_t carmen3d_euler_to_rot_matrix(erlcm_euler_t euler) */
+  /* static inline ripl_rot_matrix_t carmen3d_euler_to_rot_matrix(ripl_euler_t euler) */
   /* { */
   /*   return carmen3d_quaternion_to_rot_matrix(carmen3d_euler_to_quaternion(euler)); */
   /* } */
 
-  /* static inline erlcm_axis_angle_t carmen3d_euler_to_axis_angle(erlcm_euler_t euler) */
+  /* static inline ripl_axis_angle_t carmen3d_euler_to_axis_angle(ripl_euler_t euler) */
   /* { */
   /*   return carmen3d_quaternion_to_axis_angle(carmen3d_euler_to_quaternion(euler)); */
   /* } */

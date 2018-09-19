@@ -5,7 +5,7 @@
 /* void carmen3d_angle_conversion_unit_test() */
 /* { */
 /*   //some random axis angles: */
-/*   erlcm_axis_angle_t a, r; */
+/*   ripl_axis_angle_t a, r; */
 /*   double err; */
 
 /*   a.ax = 0; */

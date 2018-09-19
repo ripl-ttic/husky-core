@@ -14,9 +14,9 @@ int CMi, CMj;
 static int map_type = 0;
 
 //this looks like a very weird method 
-erlcm_gridmap_t * carmen3d_map_create_compressed_carmen3d_gridmap_t(float *complete_map, char * map_name, erlcm_gridmap_t* gmappermap, double scale, double shift)
+ripl_gridmap_t * carmen3d_map_create_compressed_carmen3d_gridmap_t(float *complete_map, char * map_name, ripl_gridmap_t* gmappermap, double scale, double shift)
 {
-  erlcm_gridmap_t * lcm_msg = (erlcm_gridmap_t *) calloc(1,sizeof(erlcm_gridmap_t));
+  ripl_gridmap_t * lcm_msg = (ripl_gridmap_t *) calloc(1,sizeof(ripl_gridmap_t));
   lcm_msg->config.x_size = gmappermap->config.x_size;
   lcm_msg->config.y_size = gmappermap->config.y_size;
   lcm_msg->config.resolution = gmappermap->config.resolution;
@@ -61,7 +61,7 @@ erlcm_gridmap_t * carmen3d_map_create_compressed_carmen3d_gridmap_t(float *compl
   return lcm_msg;
 }
 
-carmen_inline carmen_map_p carmen3d_map_map3d_map_copy(erlcm_map_p map)
+carmen_inline carmen_map_p carmen3d_map_map3d_map_copy(ripl_map_p map)
 {
   carmen_map_p new_map;
   int i;
@@ -88,7 +88,7 @@ carmen_inline carmen_map_p carmen3d_map_map3d_map_copy(erlcm_map_p map)
 
 int convert_and_publish_map(carmen_map_p map_p, lcm_t *lcm, const char *name){
 
-  static erlcm_gridmap_t lcm_msg;
+  static ripl_gridmap_t lcm_msg;
   lcm_msg.config.x_size = map_p->config.x_size;
   lcm_msg.config.y_size = map_p->config.y_size;
   lcm_msg.config.resolution =  map_p->config.resolution;
@@ -109,30 +109,30 @@ int convert_and_publish_map(carmen_map_p map_p, lcm_t *lcm, const char *name){
     }
   }
   
-  erlcm_gridmap_t *to_pub  = carmen3d_map_create_compressed_carmen3d_gridmap_t(map_p->complete_map, 
+  ripl_gridmap_t *to_pub  = carmen3d_map_create_compressed_carmen3d_gridmap_t(map_p->complete_map, 
 							      lcm_msg.config.map_name, &lcm_msg, 1, 0);
   
   //publish the map once when we load it  
-  //erlcm_gridmap_t_publish(lcm, GMAPPER_GRIDMAP_CHANNEL, to_pub);    
-  erlcm_gridmap_t_publish(lcm, "FINAL_SLAM", to_pub);  
+  //ripl_gridmap_t_publish(lcm, GMAPPER_GRIDMAP_CHANNEL, to_pub);    
+  ripl_gridmap_t_publish(lcm, "FINAL_SLAM", to_pub);  
 
-  erlcm_multi_gridmap_t lcm_full_map_msg;
+  ripl_multi_gridmap_t lcm_full_map_msg;
   //message that holds the multi-floor map
   lcm_full_map_msg.no_floors = 1;
   lcm_full_map_msg.current_floor_ind = 0;  //this current floor is the index for the map 
-  lcm_full_map_msg.maps = (erlcm_floor_gridmap_t *)malloc(1* sizeof(erlcm_floor_gridmap_t));
-  memcpy(&lcm_full_map_msg.maps[0].gridmap, to_pub, sizeof(erlcm_gridmap_t));    
+  lcm_full_map_msg.maps = (ripl_floor_gridmap_t *)malloc(1* sizeof(ripl_floor_gridmap_t));
+  memcpy(&lcm_full_map_msg.maps[0].gridmap, to_pub, sizeof(ripl_gridmap_t));    
   lcm_full_map_msg.maps[0].floor_no = 1;
 
   //for the multi-floor map   
-  erlcm_multi_gridmap_t_publish(lcm, "MULTI_FLOOR_MAPS", &lcm_full_map_msg);
+  ripl_multi_gridmap_t_publish(lcm, "MULTI_FLOOR_MAPS", &lcm_full_map_msg);
 
 
   return 0;
 }
 
 
-void carmen3d_map_uncompress_lcm_map(erlcm_map_t* new_map, const erlcm_gridmap_t* map_msg)
+void carmen3d_map_uncompress_lcm_map(ripl_map_t* new_map, const ripl_gridmap_t* map_msg)
 {
 
   new_map->config.x_size = map_msg->config.x_size;
@@ -175,7 +175,7 @@ void carmen3d_map_uncompress_lcm_map(erlcm_map_t* new_map, const erlcm_gridmap_t
         "compiled without zlib support, so this map cannot be\n"
         "used. Sorry.\n");
 
-    memset(new_map, 0, sizeof(erlcm_map_t));
+    memset(new_map, 0, sizeof(ripl_map_t));
 
     return;
   }
@@ -192,7 +192,7 @@ void carmen3d_map_uncompress_lcm_map(erlcm_map_t* new_map, const erlcm_gridmap_t
 }
 
 //map co-ord - where the map left corner is 0 
-carmen_point_t carmen3d_map_global_to_map_coordinates(carmen_point_t global_pt, erlcm_map_t* map)
+carmen_point_t carmen3d_map_global_to_map_coordinates(carmen_point_t global_pt, ripl_map_t* map)
 {
   carmen_point_t map_pt;
   map_pt.x = global_pt.x + map->midpt.x - map->map_zero.x;
@@ -202,7 +202,7 @@ carmen_point_t carmen3d_map_global_to_map_coordinates(carmen_point_t global_pt, 
 }
 
 //back to global co-ordinate set 
-carmen_point_t carmen3d_map_map_to_global_coordinates(carmen_point_t map_pt, erlcm_map_t* map)
+carmen_point_t carmen3d_map_map_to_global_coordinates(carmen_point_t map_pt, ripl_map_t* map)
 {
   carmen_point_t global_pt;
 
@@ -236,7 +236,7 @@ void carmen3d_map3d_map_index_to_global_coordinates(double *global_pt_x, double 
     *global_pt_y = map_idx_y * map_resoln + map_zero.y - map_midpt.y;// + map_resoln / 2.0;
 }
 
-void carmen3d_map_initialize(erlcm_map_p map)
+void carmen3d_map_initialize(ripl_map_p map)
 {
   map->map_zero.x = 0;
   map->map_zero.y = 0;
@@ -244,8 +244,8 @@ void carmen3d_map_initialize(erlcm_map_p map)
   map->midpt.y = 0;
 }
 
-void carmen3d_map_change_point_update(carmen_point_t* old_pt, carmen_point_t* new_pt, erlcm_map_p old_map,
-    erlcm_map_p new_map)
+void carmen3d_map_change_point_update(carmen_point_t* old_pt, carmen_point_t* new_pt, ripl_map_p old_map,
+    ripl_map_p new_map)
 {
   carmen_point_t temp_pt;
   temp_pt = carmen3d_map_map_to_global_coordinates(*old_pt, old_map);
@@ -253,7 +253,7 @@ void carmen3d_map_change_point_update(carmen_point_t* old_pt, carmen_point_t* ne
   new_pt->theta = 0;
 }
 
-carmen_inline void carmen3d_map_destroy(erlcm_map_p *map)
+carmen_inline void carmen3d_map_destroy(ripl_map_p *map)
 {
   free((*map)->complete_map);
   free((*map)->map);

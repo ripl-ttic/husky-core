@@ -20,6 +20,7 @@ include_directories(
     )
 target_link_libraries (carmen-utils z)
 
+pods_use_pkg_config_packages (carmen-utils lcmtypes_hr-lcmtypes)
 # make the header public
 # install it to include/hello
 pods_install_headers(carmen.h
